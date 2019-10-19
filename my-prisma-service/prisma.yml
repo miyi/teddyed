@@ -1,0 +1,6 @@
+endpoint: http://my-pr-Publi-GSL9B2TNIRSN-331581017.us-west-2.elb.amazonaws.com/my-prisma-service/stage0
+datamodel: datamodel.prisma
+
+generate:
+  - generator: typescript-client
+    output: ./generated/prisma-client/
