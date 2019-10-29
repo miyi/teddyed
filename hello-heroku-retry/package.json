@@ -1,0 +1,13 @@
+{
+  "name": "script",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "prisma2": "2.0.0-preview015"
+  },
+  "scripts": {
+    "dev": "node ./script.js",
+    "postinstall": "prisma2 generate"
+  }
+}

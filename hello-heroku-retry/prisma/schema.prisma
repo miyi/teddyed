@@ -1,0 +1,25 @@
+generator photon {
+  provider = "photonjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://xionaixtbmnrtl:71cb7545c28a6e4091416ecc0786eb1c3b3fba3429852813f175113d28229c79@ec2-107-21-126-201.compute-1.amazonaws.com:5432/daf9fq054h2b3a?schema=default&sslmode=prefer"
+}
+
+model Post {
+  id        String   @default(cuid()) @id
+  author    User?
+  content   String?
+  createdAt DateTime @default(now())
+  published Boolean
+  title     String
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id    String  @default(cuid()) @id
+  email String  @unique
+  name  String?
+  post  Post[]
+}
