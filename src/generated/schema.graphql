@@ -12,7 +12,7 @@ type Mutation {
 }
 
 type Post {
-  author: User
+  author: User!
   content: String
   createdAt: DateTime!
   id: ID!

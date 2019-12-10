@@ -74,7 +74,7 @@ export interface NexusGenFieldTypes {
     signupUser: NexusGenRootTypes['User']; // User!
   }
   Post: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
+    author: NexusGenRootTypes['User']; // User!
     content: string | null; // String
     createdAt: any; // DateTime!
     id: string; // ID!

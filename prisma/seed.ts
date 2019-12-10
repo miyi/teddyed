@@ -44,7 +44,9 @@ async function main() {
       posts: true,
     },
   })
-  console.log(`Created users: ${user1.name} (${user1.posts.length} post) and (${user2.posts.length} posts) `)
+  console.log(
+    `Created users: ${user1.name} (${user1.posts.length} post) and (${user2.posts.length} posts) `,
+  )
 
   // Retrieve all published posts
   const allPosts = await photon.posts.findMany({
@@ -87,6 +89,68 @@ async function main() {
     })
     .posts()
   console.log(`Retrieved all posts from a specific user: `, postsByUser)
+
+  const provider_1 = await photon.providers.create({
+    data: {
+      email: 'john@provider.com',
+      name: 'john',
+      listings: {
+        create: {
+          title: 'math tutoring',
+        },
+      },
+    },
+    include: {
+      listings: true,
+    },
+  })
+
+  const provider_2 = await photon.providers.create({
+    data: {
+      email: 'george.provider.com',
+      name: 'george',
+      listings: {
+        create: {
+          title: 'writing camp',
+        },
+      },
+    },
+    include: {
+      listings: true,
+    },
+  })
+
+  console.log(
+    `Created users: ${provider_1.name} (${provider_1.listings.length} post) and ${provider_2.name} ( ${provider_2.listings.length} posts) `,
+  )
+
+  const allListings = await photon.listings.findMany()
+
+  console.log('allListings: ', allListings)
+
+  const newListing = await photon.listings.create({
+    data: {
+      title: 'Hackathon for teens',
+      content: 'http://slack.prisma.io',
+      owner: {
+        connect: {
+          email: 'john@provider.com',
+        },
+      },
+    },
+  })
+
+  console.log(`Created a new listing: `, newListing)
+
+  const listingsByJohn = await photon.providers
+    .findOne({
+      where: {
+        email: 'john@provider.com',
+      },
+    })
+    .listings()
+
+  console.log('updated listings by john: ', listingsByJohn)
 }
 
 main()
