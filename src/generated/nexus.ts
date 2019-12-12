@@ -20,6 +20,20 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  ListingCreateManyWithoutListingsInput: { // input type
+    connect?: NexusGenInputs['ListingWhereUniqueInput'][] | null; // [ListingWhereUniqueInput!]
+    create?: NexusGenInputs['ListingCreateWithoutOwnerInput'][] | null; // [ListingCreateWithoutOwnerInput!]
+  }
+  ListingCreateWithoutOwnerInput: { // input type
+    content?: string | null; // String
+    createdAt?: any | null; // DateTime
+    id?: string | null; // ID
+    title: string; // String!
+    updatedAt?: any | null; // DateTime
+  }
+  ListingWhereUniqueInput: { // input type
+    id?: string | null; // ID
+  }
   PostCreateManyWithoutPostsInput: { // input type
     connect?: NexusGenInputs['PostWhereUniqueInput'][] | null; // [PostWhereUniqueInput!]
     create?: NexusGenInputs['PostCreateWithoutAuthorInput'][] | null; // [PostCreateWithoutAuthorInput!]
@@ -35,6 +49,12 @@ export interface NexusGenInputs {
   PostWhereUniqueInput: { // input type
     id?: string | null; // ID
   }
+  ProviderCreateInput: { // input type
+    email: string; // String!
+    id?: string | null; // ID
+    listings?: NexusGenInputs['ListingCreateManyWithoutListingsInput'] | null; // ListingCreateManyWithoutListingsInput
+    name?: string | null; // String
+  }
   UserCreateInput: { // input type
     email: string; // String!
     id?: string | null; // ID
@@ -47,8 +67,10 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
+  Listing: photon.Listing;
   Mutation: {};
   Post: photon.Post;
+  Provider: photon.Provider;
   Query: {};
   User: photon.User;
   String: string;
@@ -60,17 +82,30 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  ListingCreateManyWithoutListingsInput: NexusGenInputs['ListingCreateManyWithoutListingsInput'];
+  ListingCreateWithoutOwnerInput: NexusGenInputs['ListingCreateWithoutOwnerInput'];
+  ListingWhereUniqueInput: NexusGenInputs['ListingWhereUniqueInput'];
   PostCreateManyWithoutPostsInput: NexusGenInputs['PostCreateManyWithoutPostsInput'];
   PostCreateWithoutAuthorInput: NexusGenInputs['PostCreateWithoutAuthorInput'];
   PostWhereUniqueInput: NexusGenInputs['PostWhereUniqueInput'];
+  ProviderCreateInput: NexusGenInputs['ProviderCreateInput'];
   UserCreateInput: NexusGenInputs['UserCreateInput'];
 }
 
 export interface NexusGenFieldTypes {
+  Listing: { // field return type
+    content: string | null; // String
+    createdAt: any; // DateTime!
+    id: string; // ID!
+    owner: NexusGenRootTypes['Provider']; // Provider!
+    title: string; // String!
+    updatedAt: any; // DateTime!
+  }
   Mutation: { // field return type
     createDraft: NexusGenRootTypes['Post']; // Post!
-    deleteOnePost: NexusGenRootTypes['Post'] | null; // Post
+    createListing: NexusGenRootTypes['Listing']; // Listing!
     publish: NexusGenRootTypes['Post'] | null; // Post
+    signupProvider: NexusGenRootTypes['Provider']; // Provider!
     signupUser: NexusGenRootTypes['User']; // User!
   }
   Post: { // field return type
@@ -82,10 +117,19 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     updatedAt: any; // DateTime!
   }
+  Provider: { // field return type
+    email: string; // String!
+    id: string; // ID!
+    listings: NexusGenRootTypes['Listing'][]; // [Listing!]!
+    name: string | null; // String
+  }
   Query: { // field return type
+    browse: NexusGenRootTypes['Listing'][]; // [Listing!]!
     feed: NexusGenRootTypes['Post'][]; // [Post!]!
     filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
+    listing: NexusGenRootTypes['Listing'] | null; // Listing
     post: NexusGenRootTypes['Post'] | null; // Post
+    search: NexusGenRootTypes['Listing'][]; // [Listing!]!
   }
   User: { // field return type
     email: string; // String!
@@ -102,22 +146,41 @@ export interface NexusGenArgTypes {
       content?: string | null; // String
       title: string; // String!
     }
-    deleteOnePost: { // args
-      where: NexusGenInputs['PostWhereUniqueInput']; // PostWhereUniqueInput!
+    createListing: { // args
+      ownerEmail: string; // String!
+      title: string; // String!
     }
     publish: { // args
       id?: string | null; // ID
     }
+    signupProvider: { // args
+      data: NexusGenInputs['ProviderCreateInput']; // ProviderCreateInput!
+    }
     signupUser: { // args
       data: NexusGenInputs['UserCreateInput']; // UserCreateInput!
+    }
+  }
+  Provider: {
+    listings: { // args
+      after?: string | null; // ID
+      before?: string | null; // ID
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
     }
   }
   Query: {
     filterPosts: { // args
       searchString?: string | null; // String
     }
+    listing: { // args
+      where: NexusGenInputs['ListingWhereUniqueInput']; // ListingWhereUniqueInput!
+    }
     post: { // args
       where: NexusGenInputs['PostWhereUniqueInput']; // PostWhereUniqueInput!
+    }
+    search: { // args
+      searchString?: string | null; // String
     }
   }
 }
@@ -127,9 +190,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Post" | "Query" | "User";
+export type NexusGenObjectNames = "Listing" | "Mutation" | "Post" | "Provider" | "Query" | "User";
 
-export type NexusGenInputNames = "PostCreateManyWithoutPostsInput" | "PostCreateWithoutAuthorInput" | "PostWhereUniqueInput" | "UserCreateInput";
+export type NexusGenInputNames = "ListingCreateManyWithoutListingsInput" | "ListingCreateWithoutOwnerInput" | "ListingWhereUniqueInput" | "PostCreateManyWithoutPostsInput" | "PostCreateWithoutAuthorInput" | "PostWhereUniqueInput" | "ProviderCreateInput" | "UserCreateInput";
 
 export type NexusGenEnumNames = never;
 

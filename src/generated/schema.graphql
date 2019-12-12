@@ -4,10 +4,37 @@
 
 scalar DateTime
 
+type Listing {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  owner: Provider!
+  title: String!
+  updatedAt: DateTime!
+}
+
+input ListingCreateManyWithoutListingsInput {
+  connect: [ListingWhereUniqueInput!]
+  create: [ListingCreateWithoutOwnerInput!]
+}
+
+input ListingCreateWithoutOwnerInput {
+  content: String
+  createdAt: DateTime
+  id: ID
+  title: String!
+  updatedAt: DateTime
+}
+
+input ListingWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
   createDraft(authorEmail: String, content: String, title: String!): Post!
-  deleteOnePost(where: PostWhereUniqueInput!): Post
+  createListing(ownerEmail: String!, title: String!): Listing!
   publish(id: ID): Post
+  signupProvider(data: ProviderCreateInput!): Provider!
   signupUser(data: UserCreateInput!): User!
 }
 
@@ -39,10 +66,27 @@ input PostWhereUniqueInput {
   id: ID
 }
 
+type Provider {
+  email: String!
+  id: ID!
+  listings(after: ID, before: ID, first: Int, last: Int, skip: Int): [Listing!]!
+  name: String
+}
+
+input ProviderCreateInput {
+  email: String!
+  id: ID
+  listings: ListingCreateManyWithoutListingsInput
+  name: String
+}
+
 type Query {
+  browse: [Listing!]!
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!
+  listing(where: ListingWhereUniqueInput!): Listing
   post(where: PostWhereUniqueInput!): Post
+  search(searchString: String): [Listing!]!
 }
 
 type User {

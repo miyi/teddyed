@@ -14,6 +14,16 @@ model User {
   posts Post[]
 }
 
+model Post {
+  id        String   @default(cuid()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(true)
+  title     String
+  content   String?
+  author    User
+}
+
 model Provider {
   id       String    @default(cuid()) @id
   email    String    @unique
@@ -30,12 +40,3 @@ model Listing {
   owner     Provider
 }
 
-model Post {
-  id        String   @default(cuid()) @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(true)
-  title     String
-  content   String?
-  author    User
-}

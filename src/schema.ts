@@ -1,5 +1,6 @@
 import { nexusPrismaPlugin } from 'nexus-prisma'
 import { idArg, makeSchema, objectType, stringArg } from 'nexus'
+import { connect } from 'http2'
 
 const User = objectType({
   name: 'User',
@@ -23,6 +24,32 @@ const Post = objectType({
     t.model.content()
     t.model.published()
     t.model.author()
+  },
+})
+
+const Provider = objectType({
+  name: 'Provider',
+  definition(t) {
+    t.model.id()
+    t.model.name()
+    t.model.email()
+    t.model.listings({
+      type: 'Listing',
+    })
+  },
+})
+
+const Listing = objectType({
+  name: 'Listing',
+  definition(t) {
+    t.model.id()
+    t.model.createdAt()
+    t.model.updatedAt()
+    t.model.title()
+    t.model.content()
+    t.model.owner({
+      type: 'Provider',
+    })
   },
 })
 
@@ -58,6 +85,34 @@ const Query = objectType({
         })
       },
     })
+
+    t.crud.listing({
+      alias: 'listing',
+    })
+
+    t.list.field('browse', {
+      type: 'Listing',
+      resolve: (_, args, ctx) => {
+        return ctx.photon.listings.findMany()
+      },
+    })
+
+    t.list.field('search', {
+      type: 'Listing',
+      args: {
+        searchString: stringArg({ nullable: true }),
+      },
+      resolve: (_, { searchString }, ctx) => {
+        return ctx.photon.listings.findMany({
+          where: {
+            OR: [
+              { title: { contains: searchString } },
+              { content: { contains: searchString } },
+            ],
+          },
+        })
+      },
+    })
   },
 })
 
@@ -65,8 +120,6 @@ const Mutation = objectType({
   name: 'Mutation',
   definition(t) {
     t.crud.createOneUser({ alias: 'signupUser' })
-    t.crud.deleteOnePost()
-
     t.field('createDraft', {
       type: 'Post',
       args: {
@@ -101,11 +154,30 @@ const Mutation = objectType({
         })
       },
     })
+
+    t.crud.createOneProvider({ alias: 'signupProvider' })
+    t.field('createListing', {
+      type: 'Listing',
+      args: {
+        title: stringArg({ nullable: false }),
+        ownerEmail: stringArg({ nullable: false }),
+      },
+      resolve: (_, { title, ownerEmail }, ctx) => {
+        return ctx.photon.listings.create({
+          data: {
+            title: title,
+            owner: {
+              connect: { email: ownerEmail },
+            },
+          },
+        })
+      },
+    })
   },
 })
 
 export const schema = makeSchema({
-  types: [Query, Mutation, Post, User],
+  types: [Query, Mutation, Post, User, Provider, Listing],
   plugins: [nexusPrismaPlugin()],
   outputs: {
     schema: __dirname + '/generated/schema.graphql',
