@@ -1,4 +1,5 @@
 import { Photon } from '@prisma/photon'
+import { connect } from 'http2'
 
 const photon = new Photon()
 
@@ -99,24 +100,44 @@ async function main() {
           title: 'math tutoring',
         },
       },
-    },
-    include: {
-      listings: true,
-    },
-  })
-
-  const provider_2 = await photon.providers.create({
-    data: {
-      email: 'george.provider.com',
-      name: 'george',
-      listings: {
+      instructors: {
         create: {
-          title: 'writing camp',
+          email: 'john@provider.com',
+          firstName: 'John',
+          lastName: 'Smith',
+          gender: 'MALE',
+          age: 25,
         },
       },
     },
     include: {
       listings: true,
+      instructors: true,
+    },
+  })
+
+  const provider_2 = await photon.providers.create({
+    data: {
+      email: 'susie@provider.com',
+      name: 'susie',
+      listings: {
+        create: {
+          title: 'writing camp',
+        },
+      },
+      instructors: {
+        create: {
+          email: 'susie@provider.com',
+          firstName: 'Susie',
+          lastName: 'Sommer',
+          gender: 'FEMALE',
+          age: 22,
+        },
+      },
+    },
+    include: {
+      listings: true,
+      instructors: true,
     },
   })
 
@@ -137,20 +158,52 @@ async function main() {
           email: 'john@provider.com',
         },
       },
+      instructors: {
+        connect: {
+          email: 'john@provider.com',
+        },
+      },
     },
   })
 
   console.log(`Created a new listing: `, newListing)
 
-  const listingsByJohn = await photon.providers
-    .findOne({
+  const instructor_john = await photon.instructors.findOne({
+    where: {
+      email: 'john@provider.com',
+    },
+  })
+
+  console.log('updated listings by john: ', instructor_john)
+
+  //need the if statement to pass typescript check TS2531: 'object might be null'
+  if (instructor_john) {
+    const connectNewListingToInstructor = await photon.listings.update({
+      data: {
+        instructors: {
+          connect: {
+            id: instructor_john.id,
+          },
+        },
+      },
       where: {
-        email: 'john@provider.com',
+        id: newListing.id,
       },
     })
-    .listings()
 
-  console.log('updated listings by john: ', listingsByJohn)
+    console.log(
+      'Connect new listing to instructor John : ',
+      connectNewListingToInstructor,
+    )
+
+    const newListingByJohn = await photon.listings.findOne({
+      where: {
+        id: newListing.id,
+      },
+    })
+
+    console.log('newListingByJohn : ', newListingByJohn)
+  }
 }
 
 main()

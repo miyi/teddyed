@@ -1,0 +1,818 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "stepType": "CreateEnum",
+      "enum": "Gender",
+      "values": [
+        "MALE",
+        "FEMALE"
+      ]
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "User"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "User",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "User",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "User",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "field": "email",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "User",
+      "field": "email",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "field": "name",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "field": "posts",
+      "type": "Post",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "field": "student",
+      "type": "Student",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "User",
+      "field": "student",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "User",
+      "field": "student",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"UserStudents\""
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Student"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Student",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Student",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Student",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Student",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Student",
+      "field": "firstName",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Student",
+      "field": "LastName",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Student",
+      "field": "age",
+      "type": "Int",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Student",
+      "field": "gender",
+      "type": "Gender",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Student",
+      "field": "gender",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Student",
+      "field": "gender",
+      "directive": "default",
+      "argument": "",
+      "value": "MALE"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Student",
+      "field": "user",
+      "type": "User",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Student",
+      "field": "user",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Student",
+      "field": "user",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"UserStudents\""
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Post"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Post",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Post",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Post",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Post",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Post",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Post",
+      "field": "createdAt",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Post",
+      "field": "createdAt",
+      "directive": "default",
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Post",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Post",
+      "field": "updatedAt",
+      "directive": "updatedAt"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Post",
+      "field": "published",
+      "type": "Boolean",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Post",
+      "field": "published",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Post",
+      "field": "published",
+      "directive": "default",
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Post",
+      "field": "title",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Post",
+      "field": "content",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Post",
+      "field": "author",
+      "type": "User",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Provider"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Provider",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Provider",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Provider",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Provider",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Provider",
+      "field": "email",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Provider",
+      "field": "email",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Provider",
+      "field": "name",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Provider",
+      "field": "listings",
+      "type": "Listing",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Provider",
+      "field": "instructors",
+      "type": "Instructor",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Provider",
+      "field": "instructors",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Provider",
+      "field": "instructors",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ProviderInstructors\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Provider",
+      "field": "eventStore",
+      "type": "Event",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Provider",
+      "field": "eventStore",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Provider",
+      "field": "eventStore",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ProviderEvents\""
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Instructor"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Instructor",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Instructor",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Instructor",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "email",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Instructor",
+      "field": "email",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Instructor",
+      "field": "createdAt",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Instructor",
+      "field": "createdAt",
+      "directive": "default",
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Instructor",
+      "field": "updatedAt",
+      "directive": "updatedAt"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "firstName",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "lastName",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "gender",
+      "type": "Gender",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "age",
+      "type": "Int",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "provider",
+      "type": "Provider",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Instructor",
+      "field": "provider",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Instructor",
+      "field": "provider",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ProviderInstructors\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Instructor",
+      "field": "eventStore",
+      "type": "Event",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Instructor",
+      "field": "eventStore",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Instructor",
+      "field": "eventStore",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"EventsInstructors\""
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Event"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Event",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Event",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Event",
+      "field": "createdAt",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "createdAt",
+      "directive": "default",
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Event",
+      "field": "updatedAt",
+      "directive": "updatedAt"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "listing",
+      "type": "Listing",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Event",
+      "field": "listing",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "listing",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ListingEvents\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "from",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "to",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "provider",
+      "type": "Provider",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Event",
+      "field": "provider",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "provider",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ProviderEvents\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "instructors",
+      "type": "Instructor",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Event",
+      "field": "instructors",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "instructors",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"EventsInstructors\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Event",
+      "field": "students",
+      "type": "Student",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Event",
+      "field": "students",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "students",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"EventsStudents\""
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Listing"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Listing",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Listing",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Listing",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Listing",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Listing",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Listing",
+      "field": "createdAt",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Listing",
+      "field": "createdAt",
+      "directive": "default",
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Listing",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Listing",
+      "field": "updatedAt",
+      "directive": "updatedAt"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Listing",
+      "field": "title",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Listing",
+      "field": "content",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Listing",
+      "field": "owner",
+      "type": "Provider",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Listing",
+      "field": "instructors",
+      "type": "Instructor",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Listing",
+      "field": "EventStore",
+      "type": "Event",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Listing",
+      "field": "EventStore",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Listing",
+      "field": "EventStore",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ListingEvents\""
+    }
+  ]
+}

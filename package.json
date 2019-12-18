@@ -10,7 +10,7 @@
     "postinstall": "npm -s run generate",
     "dev": "ts-node-dev --no-notify --respawn --transpileOnly src/server",
     "seed": "ts-node prisma/seed",
-    "newdb": "rm -rf prisma/dev && prisma2 dev"
+    "newdb": "rm -rf prisma/dev.db && prisma2 dev"
   },
   "dependencies": {
     "@prisma/photon": "2.0.0-preview017.1",

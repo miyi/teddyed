@@ -1,0 +1,176 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "User",
+      "field": "student",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"UserStudents\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "User",
+      "field": "student",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Student",
+      "field": "user",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"UserStudents\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Student",
+      "field": "user",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Provider",
+      "field": "instructors",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ProviderInstructors\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Provider",
+      "field": "instructors",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Provider",
+      "field": "eventStore",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ProviderEvents\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Provider",
+      "field": "eventStore",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Instructor",
+      "field": "provider",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ProviderInstructors\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Instructor",
+      "field": "provider",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Instructor",
+      "field": "eventStore",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"EventsInstructors\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Instructor",
+      "field": "eventStore",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Instructor",
+      "field": "email",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "listing",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ListingEvents\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Event",
+      "field": "listing",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "provider",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ProviderEvents\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Event",
+      "field": "provider",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "instructors",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"EventsInstructors\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Event",
+      "field": "instructors",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Event",
+      "field": "students",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"EventsStudents\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Event",
+      "field": "students",
+      "directive": "relation",
+      "argument": ""
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Listing",
+      "field": "EventStore",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"ListingEvents\""
+    },
+    {
+      "stepType": "DeleteDirectiveArgument",
+      "model": "Listing",
+      "field": "EventStore",
+      "directive": "relation",
+      "argument": ""
+    }
+  ]
+}

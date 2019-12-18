@@ -4,6 +4,68 @@
 
 scalar DateTime
 
+input EventCreateManyWithoutEventStoreInput {
+  connect: [EventWhereUniqueInput!]
+  create: [EventCreateWithoutInstructorsInput!]
+}
+
+input EventCreateOneWithoutEventInput {
+  connect: EventWhereUniqueInput
+  create: EventCreateWithoutStudentsInput
+}
+
+input EventCreateWithoutInstructorsInput {
+  createdAt: DateTime
+  from: DateTime!
+  id: ID
+  listing: ListingCreateOneWithoutListingInput!
+  provider: ProviderCreateOneWithoutProviderInput!
+  students: StudentCreateManyWithoutStudentsInput
+  to: DateTime!
+  updatedAt: DateTime
+}
+
+input EventCreateWithoutStudentsInput {
+  createdAt: DateTime
+  from: DateTime!
+  id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
+  listing: ListingCreateOneWithoutListingInput!
+  provider: ProviderCreateOneWithoutProviderInput!
+  to: DateTime!
+  updatedAt: DateTime
+}
+
+input EventWhereUniqueInput {
+  id: ID
+}
+
+enum Gender {
+  FEMALE
+  MALE
+}
+
+input InstructorCreateManyWithoutInstructorsInput {
+  connect: [InstructorWhereUniqueInput!]
+  create: [InstructorCreateWithoutProviderInput!]
+}
+
+input InstructorCreateWithoutProviderInput {
+  age: Int!
+  createdAt: DateTime
+  eventStore: EventCreateManyWithoutEventStoreInput
+  firstName: String!
+  gender: Gender!
+  id: ID
+  lastName: String!
+  listing: ListingCreateOneWithoutListingInput
+  updatedAt: DateTime
+}
+
+input InstructorWhereUniqueInput {
+  id: ID
+}
+
 type Listing {
   content: String
   createdAt: DateTime!
@@ -18,10 +80,27 @@ input ListingCreateManyWithoutListingsInput {
   create: [ListingCreateWithoutOwnerInput!]
 }
 
-input ListingCreateWithoutOwnerInput {
+input ListingCreateOneWithoutListingInput {
+  connect: ListingWhereUniqueInput
+  create: ListingCreateWithoutEventStoreInput
+}
+
+input ListingCreateWithoutEventStoreInput {
   content: String
   createdAt: DateTime
   id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
+  owner: ProviderCreateOneWithoutOwnerInput!
+  title: String!
+  updatedAt: DateTime
+}
+
+input ListingCreateWithoutOwnerInput {
+  content: String
+  createdAt: DateTime
+  EventStore: EventCreateManyWithoutEventStoreInput
+  id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
   title: String!
   updatedAt: DateTime
 }
@@ -75,9 +154,42 @@ type Provider {
 
 input ProviderCreateInput {
   email: String!
+  eventStore: EventCreateManyWithoutEventStoreInput
   id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
   listings: ListingCreateManyWithoutListingsInput
   name: String
+}
+
+input ProviderCreateOneWithoutOwnerInput {
+  connect: ProviderWhereUniqueInput
+  create: ProviderCreateWithoutListingsInput
+}
+
+input ProviderCreateOneWithoutProviderInput {
+  connect: ProviderWhereUniqueInput
+  create: ProviderCreateWithoutEventStoreInput
+}
+
+input ProviderCreateWithoutEventStoreInput {
+  email: String!
+  id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
+  listings: ListingCreateManyWithoutListingsInput
+  name: String
+}
+
+input ProviderCreateWithoutListingsInput {
+  email: String!
+  eventStore: EventCreateManyWithoutEventStoreInput
+  id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
+  name: String
+}
+
+input ProviderWhereUniqueInput {
+  email: String
+  id: ID
 }
 
 type Query {
@@ -87,6 +199,38 @@ type Query {
   listing(where: ListingWhereUniqueInput!): Listing
   post(where: PostWhereUniqueInput!): Post
   search(searchString: String): [Listing!]!
+}
+
+input StudentCreateManyWithoutStudentInput {
+  connect: [StudentWhereUniqueInput!]
+  create: [StudentCreateWithoutUserInput!]
+}
+
+input StudentCreateManyWithoutStudentsInput {
+  connect: [StudentWhereUniqueInput!]
+  create: [StudentCreateWithoutEventInput!]
+}
+
+input StudentCreateWithoutEventInput {
+  age: Int
+  firstName: String
+  gender: Gender
+  id: ID
+  LastName: String
+  user: UserCreateOneWithoutUserInput!
+}
+
+input StudentCreateWithoutUserInput {
+  age: Int
+  event: EventCreateOneWithoutEventInput
+  firstName: String
+  gender: Gender
+  id: ID
+  LastName: String
+}
+
+input StudentWhereUniqueInput {
+  id: ID
 }
 
 type User {
@@ -101,4 +245,22 @@ input UserCreateInput {
   id: ID
   name: String
   posts: PostCreateManyWithoutPostsInput
+  student: StudentCreateManyWithoutStudentInput
+}
+
+input UserCreateOneWithoutUserInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutStudentInput
+}
+
+input UserCreateWithoutStudentInput {
+  email: String!
+  id: ID
+  name: String
+  posts: PostCreateManyWithoutPostsInput
+}
+
+input UserWhereUniqueInput {
+  email: String
+  id: ID
 }
