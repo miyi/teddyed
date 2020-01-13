@@ -16,24 +16,32 @@ input EventCreateOneWithoutEventInput {
 
 input EventCreateWithoutInstructorsInput {
   createdAt: DateTime
-  from: DateTime!
+  eventState: EventState
+  from: DateTime
   id: ID
   listing: ListingCreateOneWithoutListingInput!
   provider: ProviderCreateOneWithoutProviderInput!
   students: StudentCreateManyWithoutStudentsInput
-  to: DateTime!
+  to: DateTime
   updatedAt: DateTime
 }
 
 input EventCreateWithoutStudentsInput {
   createdAt: DateTime
-  from: DateTime!
+  eventState: EventState
+  from: DateTime
   id: ID
   instructors: InstructorCreateManyWithoutInstructorsInput
   listing: ListingCreateOneWithoutListingInput!
   provider: ProviderCreateOneWithoutProviderInput!
-  to: DateTime!
+  to: DateTime
   updatedAt: DateTime
+}
+
+enum EventState {
+  ACTIVE
+  CANCELLED
+  FULFILLED
 }
 
 input EventWhereUniqueInput {
@@ -51,11 +59,12 @@ input InstructorCreateManyWithoutInstructorsInput {
 }
 
 input InstructorCreateWithoutProviderInput {
-  age: Int!
+  age: Int
   createdAt: DateTime
+  email: String
   eventStore: EventCreateManyWithoutEventStoreInput
   firstName: String!
-  gender: Gender!
+  gender: Gender
   id: ID
   lastName: String!
   listing: ListingCreateOneWithoutListingInput
@@ -63,6 +72,7 @@ input InstructorCreateWithoutProviderInput {
 }
 
 input InstructorWhereUniqueInput {
+  email: String
   id: ID
 }
 
@@ -216,7 +226,7 @@ input StudentCreateWithoutEventInput {
   firstName: String
   gender: Gender
   id: ID
-  LastName: String
+  lastName: String
   user: UserCreateOneWithoutUserInput!
 }
 
@@ -226,7 +236,7 @@ input StudentCreateWithoutUserInput {
   firstName: String
   gender: Gender
   id: ID
-  LastName: String
+  lastName: String
 }
 
 input StudentWhereUniqueInput {

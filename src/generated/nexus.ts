@@ -30,22 +30,24 @@ export interface NexusGenInputs {
   }
   EventCreateWithoutInstructorsInput: { // input type
     createdAt?: any | null; // DateTime
-    from: any; // DateTime!
+    eventState?: NexusGenEnums['EventState'] | null; // EventState
+    from?: any | null; // DateTime
     id?: string | null; // ID
     listing: NexusGenInputs['ListingCreateOneWithoutListingInput']; // ListingCreateOneWithoutListingInput!
     provider: NexusGenInputs['ProviderCreateOneWithoutProviderInput']; // ProviderCreateOneWithoutProviderInput!
     students?: NexusGenInputs['StudentCreateManyWithoutStudentsInput'] | null; // StudentCreateManyWithoutStudentsInput
-    to: any; // DateTime!
+    to?: any | null; // DateTime
     updatedAt?: any | null; // DateTime
   }
   EventCreateWithoutStudentsInput: { // input type
     createdAt?: any | null; // DateTime
-    from: any; // DateTime!
+    eventState?: NexusGenEnums['EventState'] | null; // EventState
+    from?: any | null; // DateTime
     id?: string | null; // ID
     instructors?: NexusGenInputs['InstructorCreateManyWithoutInstructorsInput'] | null; // InstructorCreateManyWithoutInstructorsInput
     listing: NexusGenInputs['ListingCreateOneWithoutListingInput']; // ListingCreateOneWithoutListingInput!
     provider: NexusGenInputs['ProviderCreateOneWithoutProviderInput']; // ProviderCreateOneWithoutProviderInput!
-    to: any; // DateTime!
+    to?: any | null; // DateTime
     updatedAt?: any | null; // DateTime
   }
   EventWhereUniqueInput: { // input type
@@ -56,17 +58,19 @@ export interface NexusGenInputs {
     create?: NexusGenInputs['InstructorCreateWithoutProviderInput'][] | null; // [InstructorCreateWithoutProviderInput!]
   }
   InstructorCreateWithoutProviderInput: { // input type
-    age: number; // Int!
+    age?: number | null; // Int
     createdAt?: any | null; // DateTime
+    email?: string | null; // String
     eventStore?: NexusGenInputs['EventCreateManyWithoutEventStoreInput'] | null; // EventCreateManyWithoutEventStoreInput
     firstName: string; // String!
-    gender: NexusGenEnums['Gender']; // Gender!
+    gender?: NexusGenEnums['Gender'] | null; // Gender
     id?: string | null; // ID
     lastName: string; // String!
     listing?: NexusGenInputs['ListingCreateOneWithoutListingInput'] | null; // ListingCreateOneWithoutListingInput
     updatedAt?: any | null; // DateTime
   }
   InstructorWhereUniqueInput: { // input type
+    email?: string | null; // String
     id?: string | null; // ID
   }
   ListingCreateManyWithoutListingsInput: { // input type
@@ -160,7 +164,7 @@ export interface NexusGenInputs {
     firstName?: string | null; // String
     gender?: NexusGenEnums['Gender'] | null; // Gender
     id?: string | null; // ID
-    LastName?: string | null; // String
+    lastName?: string | null; // String
     user: NexusGenInputs['UserCreateOneWithoutUserInput']; // UserCreateOneWithoutUserInput!
   }
   StudentCreateWithoutUserInput: { // input type
@@ -169,7 +173,7 @@ export interface NexusGenInputs {
     firstName?: string | null; // String
     gender?: NexusGenEnums['Gender'] | null; // Gender
     id?: string | null; // ID
-    LastName?: string | null; // String
+    lastName?: string | null; // String
   }
   StudentWhereUniqueInput: { // input type
     id?: string | null; // ID
@@ -198,6 +202,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  EventState: photon.EventState
   Gender: photon.Gender
 }
 
@@ -248,6 +253,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   UserCreateOneWithoutUserInput: NexusGenInputs['UserCreateOneWithoutUserInput'];
   UserCreateWithoutStudentInput: NexusGenInputs['UserCreateWithoutStudentInput'];
   UserWhereUniqueInput: NexusGenInputs['UserWhereUniqueInput'];
+  EventState: NexusGenEnums['EventState'];
   Gender: NexusGenEnums['Gender'];
 }
 
@@ -353,7 +359,7 @@ export type NexusGenObjectNames = "Listing" | "Mutation" | "Post" | "Provider" |
 
 export type NexusGenInputNames = "EventCreateManyWithoutEventStoreInput" | "EventCreateOneWithoutEventInput" | "EventCreateWithoutInstructorsInput" | "EventCreateWithoutStudentsInput" | "EventWhereUniqueInput" | "InstructorCreateManyWithoutInstructorsInput" | "InstructorCreateWithoutProviderInput" | "InstructorWhereUniqueInput" | "ListingCreateManyWithoutListingsInput" | "ListingCreateOneWithoutListingInput" | "ListingCreateWithoutEventStoreInput" | "ListingCreateWithoutOwnerInput" | "ListingWhereUniqueInput" | "PostCreateManyWithoutPostsInput" | "PostCreateWithoutAuthorInput" | "PostWhereUniqueInput" | "ProviderCreateInput" | "ProviderCreateOneWithoutOwnerInput" | "ProviderCreateOneWithoutProviderInput" | "ProviderCreateWithoutEventStoreInput" | "ProviderCreateWithoutListingsInput" | "ProviderWhereUniqueInput" | "StudentCreateManyWithoutStudentInput" | "StudentCreateManyWithoutStudentsInput" | "StudentCreateWithoutEventInput" | "StudentCreateWithoutUserInput" | "StudentWhereUniqueInput" | "UserCreateInput" | "UserCreateOneWithoutUserInput" | "UserCreateWithoutStudentInput" | "UserWhereUniqueInput";
 
-export type NexusGenEnumNames = "Gender";
+export type NexusGenEnumNames = "EventState" | "Gender";
 
 export type NexusGenInterfaceNames = never;
 
