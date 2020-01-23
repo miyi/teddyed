@@ -1,6 +1,14 @@
 import { nexusPrismaPlugin } from 'nexus-prisma'
-import { idArg, makeSchema, objectType, stringArg } from 'nexus'
+import {
+  idArg,
+  intArg,
+  makeSchema,
+  objectType,
+  enumType,
+  stringArg,
+} from 'nexus'
 import { connect } from 'http2'
+import { TLSSocket } from 'tls'
 
 const User = objectType({
   name: 'User',
@@ -11,6 +19,18 @@ const User = objectType({
     t.model.posts({
       pagination: false,
     })
+  },
+})
+
+const Student = objectType({
+  name: 'Student',
+  definition(t) {
+    t.model.id()
+    t.model.firstName()
+    t.model.lastName()
+    t.model.age()
+    t.model.gender()
+    t.model.user()
   },
 })
 
@@ -39,6 +59,24 @@ const Provider = objectType({
   },
 })
 
+const Instructor = objectType({
+  name: 'Instructor',
+  definition(t) {
+    t.model.id()
+    t.model.createdAt()
+    t.model.updatedAt()
+    t.model.firstName()
+    t.model.lastName()
+    t.model.age()
+    t.model.gender()
+    t.model.listing()
+    t.model.provider()
+    t.model.eventStore({
+      type: 'Event',
+    })
+  },
+})
+
 const Listing = objectType({
   name: 'Listing',
   definition(t) {
@@ -51,6 +89,36 @@ const Listing = objectType({
       type: 'Provider',
     })
   },
+})
+
+const Event = objectType({
+  name: 'Event',
+  definition(t) {
+    t.model.id()
+    t.model.createdAt()
+    t.model.updatedAt()
+    t.model.from()
+    t.model.to()
+    t.model.listing()
+    t.model.provider()
+    t.model.instructors({
+      type: 'Instructor',
+    })
+    t.model.students({
+      type: 'Student',
+    })
+    t.model.eventState()
+  },
+})
+
+const EventState = enumType({
+  name: 'EventState',
+  members: ['ACTIVE', 'CANCELLED', 'FULFILLED'],
+})
+
+const Gender = enumType({
+  name: 'Gender',
+  members: ['MALE', 'FEMALE'],
 })
 
 const Query = objectType({
@@ -86,18 +154,34 @@ const Query = objectType({
       },
     })
 
+    t.list.field('findUser', {
+      type: 'User',
+      args: {
+        id: idArg(),
+        email: stringArg(),
+        name: stringArg(),
+      },
+      resolve: (_, { id, email, name }, ctx) => {
+        return ctx.photon.users.findMany({
+          where: {
+            OR: [{ id: id }, { email: email }, { name: name }],
+          },
+        })
+      },
+    })
+
     t.crud.listing({
       alias: 'listing',
     })
 
-    t.list.field('browse', {
+    t.list.field('browseListings', {
       type: 'Listing',
       resolve: (_, args, ctx) => {
         return ctx.photon.listings.findMany()
       },
     })
 
-    t.list.field('search', {
+    t.list.field('searchListing', {
       type: 'Listing',
       args: {
         searchString: stringArg({ nullable: true }),
@@ -108,6 +192,134 @@ const Query = objectType({
             OR: [
               { title: { contains: searchString } },
               { content: { contains: searchString } },
+              { owner: { name: searchString } },
+              { owner: { email: searchString } },
+            ],
+          },
+        })
+      },
+    })
+
+    t.list.field('findListingById', {
+      type: 'Listing',
+      args: {
+        searchString: stringArg({ nullable: true }),
+      },
+      resolve: (_, { searchString }, ctx) => {
+        return ctx.photon.listings.findMany({
+          where: { id: searchString },
+        })
+      },
+    })
+
+    t.crud.student({
+      alias: 'student',
+    })
+
+    //redundant
+    t.list.field('allStudents', {
+      type: 'Student',
+      resolve: (_, args, ctx) => {
+        return ctx.photon.students.findMany()
+      },
+    })
+
+    t.list.field('findStudentById', {
+      type: 'Student',
+      args: {
+        searchString: stringArg({ nullable: true }),
+      },
+      resolve: (_, { searchString }, ctx) => {
+        return ctx.photon.students.findMany({
+          where: { id: searchString },
+        })
+      },
+    })
+
+    t.crud.provider({}),
+      t.list.field('findProviderById', {
+        type: 'Provider',
+        args: {
+          searchString: stringArg({ nullable: true }),
+        },
+        resolve: (_, { searchString }, ctx) => {
+          return ctx.photon.providers.findMany({
+            where: { id: searchString },
+          })
+        },
+      })
+
+    t.list.field('searchProvider', {
+      type: 'Provider',
+      args: {
+        searchString: stringArg({ nullable: true }),
+      },
+      resolve: (_, { searchString }, ctx) => {
+        return ctx.photon.providers.findMany({
+          where: {
+            name: { contains: searchString },
+          },
+        })
+      },
+    })
+
+    t.crud.instructor({
+      alias: 'instructor',
+    })
+
+    t.list.field('findInstructorById', {
+      type: 'Instructor',
+      args: {
+        searchString: stringArg({ nullable: true }),
+      },
+      resolve: (_, { searchString }, ctx) => {
+        return ctx.photon.instructors.findMany({
+          where: { id: searchString },
+        })
+      },
+    })
+
+    t.list.field('searchInstructor', {
+      type: 'Instructor',
+      args: {
+        searchString: stringArg(),
+      },
+      resolve: (_, { searchString }, ctx) => {
+        return ctx.photon.instructors.findMany({
+          where: {
+            OR: [{ firstName: searchString }, { lastName: searchString }],
+          },
+        })
+      },
+    })
+
+    t.crud.event({
+      alias: 'event',
+    })
+
+    t.list.field('findEventById', {
+      type: 'Event',
+      args: {
+        searchString: stringArg({ nullable: true }),
+      },
+      resolve: (_, { searchString }, ctx) => {
+        return ctx.photon.events.findMany({
+          where: { id: searchString },
+        })
+      },
+    })
+
+    t.list.field('searchEventsByProvider', {
+      type: 'Event',
+      args: {
+        searchString: stringArg({}),
+      },
+      resolve: (_, { searchString }, ctx) => {
+        return ctx.photon.events.findMany({
+          where: {
+            OR: [
+              { provider: { name: searchString } },
+              { provider: { email: searchString } },
             ],
           },
         })
@@ -120,6 +332,68 @@ const Mutation = objectType({
   name: 'Mutation',
   definition(t) {
     t.crud.createOneUser({ alias: 'signupUser' })
+    t.crud.updateOneUser({ alias: 'updateUser' })
+    t.field('createStudent', {
+      type: 'Student',
+      args: {
+        firstName: stringArg({ nullable: false }),
+        lastName: stringArg({ nullable: false }),
+        userEmail: stringArg({ nullable: false }),
+        age: intArg({ nullable: true }),
+        gender: stringArg({ nullable: true }),
+      },
+      resolve: async (
+        _,
+        { firstName, lastName, userEmail, age, gender },
+        ctx,
+      ) => {
+        return ctx.photon.students
+          .findMany({
+            where: {
+              user: {
+                email: userEmail,
+              },
+              firstName,
+              lastName,
+            },
+          })
+          .then((result: any[]) => {
+            if (!result.length) {
+              return ctx.photon.students.create({
+                data: {
+                  firstName,
+                  lastName,
+                  age,
+                  gender,
+                  user: {
+                    connect: { email: userEmail },
+                  },
+                },
+              })
+            } else {
+              throw 'has dupes'
+            }
+          })
+          .catch((e: string) => {
+            throw new Error(e)
+          })
+      },
+    })
+
+    t.crud.updateOneStudent({ alias: 'updateStudent' })
+
+    t.field('removeStudent', {
+      type: 'Student',
+      args: {
+        id: idArg({ nullable: false }),
+      },
+      resolve: async (_, { id }, ctx) => {
+        return ctx.photon.students.delete({
+          where: { id },
+        })
+      },
+    })
+
     t.field('createDraft', {
       type: 'Post',
       args: {
@@ -156,6 +430,7 @@ const Mutation = objectType({
     })
 
     t.crud.createOneProvider({ alias: 'signupProvider' })
+
     t.field('createListing', {
       type: 'Listing',
       args: {
@@ -173,11 +448,116 @@ const Mutation = objectType({
         })
       },
     })
+
+    //todo: build validation into linkInstructorToListing
+    t.field('linkInstructorToListing', {
+      type: 'Listing',
+      args: {
+        listingId: idArg({ nullable: false }),
+        instructorId: idArg({}),
+      },
+      resolve: (_, { listingId, instructorId }, ctx) => {
+        return ctx.photon.listings.update({
+          where: { id: listingId },
+          data: {
+            instructors: {
+              connect: {
+                id: instructorId,
+              },
+            },
+          },
+        })
+      },
+    })
+
+    t.field('unlinkInstructorFromListing', {
+      type: 'Listing',
+      args: {
+        listingId: idArg({ nullable: false }),
+        instructorId: idArg({}),
+      },
+      resolve: (_, { listingId, instructorId }, ctx) => {
+        return ctx.photon.listings.update({
+          where: { id: listingId },
+          data: {
+            instructors: {
+              disconnect: {
+                id: instructorId,
+              },
+            },
+          },
+        })
+      },
+    })
+
+    t.crud.createOneInstructor({ alias: 'createInstructor' })
+    t.crud.deleteOneInstructor({ alias: 'deleteInstructor' })
+    t.crud.createOneEvent({ alias: 'createEvent' })
+    t.crud.deleteOneEvent({ alias: 'deleteEvent' })
+    t.crud.updateOneEvent({ alias: 'updateEvent' })
+
+    
+    t.field('toggleEventStateToActive', {
+      type: 'Event',
+      args: { id: idArg({ nullable: false })},
+      resolve: (_, { id }, ctx) => {
+        return ctx.photon.events.update({
+          where: {
+            id
+          },
+          data: {
+            eventState: "ACTIVE"
+          }
+        })
+      }
+    })
+
+    t.field('toggleEventStateToInactive', {
+      type: 'Event',
+      args: { id: idArg({ nullable: false })},
+      resolve: (_, { id }, ctx) => {
+        return ctx.photon.events.update({
+          where: {
+            id
+          },
+          data: {
+            eventState: "INACTIVE"
+          }
+        })
+      }
+    })
+
+    t.field('toggleEventStateToFufilled', {
+      type: 'Event',
+      args: { id: idArg({ nullable: false })},
+      resolve: (_, { id }, ctx) => {
+        return ctx.photon.events.update({
+          where: {
+            id
+          },
+          data: {
+            eventState: "FULFILLED"
+          }
+        })
+      }
+    })
   },
 })
 
 export const schema = makeSchema({
-  types: [Query, Mutation, Post, User, Provider, Listing],
+  types: [
+    Query,
+    Mutation,
+    Post,
+    User,
+    Student,
+    Provider,
+    Instructor,
+    Listing,
+    Event,
+    Gender,
+    EventState,
+  ],
   plugins: [nexusPrismaPlugin()],
   outputs: {
     schema: __dirname + '/generated/schema.graphql',

@@ -2,7 +2,49 @@
 ### Do not make changes to this file directly
 
 
+input BooleanFilter {
+  equals: Boolean
+  not: Boolean
+}
+
 scalar DateTime
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTime
+  notIn: [DateTime!]
+}
+
+type Event {
+  createdAt: DateTime!
+  eventState: EventState!
+  from: DateTime
+  id: ID!
+  instructors(after: ID, before: ID, first: Int, last: Int, skip: Int): [Instructor!]!
+  listing: Listing!
+  provider: Provider!
+  students(after: ID, before: ID, first: Int, last: Int, skip: Int): [Student!]!
+  to: DateTime
+  updatedAt: DateTime!
+}
+
+input EventCreateInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
+  listing: ListingCreateOneWithoutListingInput!
+  provider: ProviderCreateOneWithoutProviderInput!
+  students: StudentCreateManyWithoutStudentsInput
+  to: DateTime
+  updatedAt: DateTime
+}
 
 input EventCreateManyWithoutEventStoreInput {
   connect: [EventWhereUniqueInput!]
@@ -26,6 +68,30 @@ input EventCreateWithoutInstructorsInput {
   updatedAt: DateTime
 }
 
+input EventCreateWithoutListingInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
+  provider: ProviderCreateOneWithoutProviderInput!
+  students: StudentCreateManyWithoutStudentsInput
+  to: DateTime
+  updatedAt: DateTime
+}
+
+input EventCreateWithoutProviderInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  instructors: InstructorCreateManyWithoutInstructorsInput
+  listing: ListingCreateOneWithoutListingInput!
+  students: StudentCreateManyWithoutStudentsInput
+  to: DateTime
+  updatedAt: DateTime
+}
+
 input EventCreateWithoutStudentsInput {
   createdAt: DateTime
   eventState: EventState
@@ -38,10 +104,204 @@ input EventCreateWithoutStudentsInput {
   updatedAt: DateTime
 }
 
+input EventFilter {
+  every: EventWhereInput
+  none: EventWhereInput
+  some: EventWhereInput
+}
+
+input EventScalarWhereInput {
+  AND: [EventScalarWhereInput!]
+  createdAt: DateTimeFilter
+  eventState: EventState
+  from: NullableDateTimeFilter
+  id: StringFilter
+  instructors: InstructorFilter
+  NOT: [EventScalarWhereInput!]
+  OR: [EventScalarWhereInput!]
+  students: StudentFilter
+  to: NullableDateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
 enum EventState {
   ACTIVE
   CANCELLED
   FULFILLED
+}
+
+input EventUpdateInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  instructors: InstructorUpdateManyWithoutEventStoreInput
+  listing: ListingUpdateOneRequiredWithoutEventStoreInput
+  provider: ProviderUpdateOneRequiredWithoutEventStoreInput
+  students: StudentUpdateManyWithoutEventInput
+  to: DateTime
+  updatedAt: DateTime
+}
+
+input EventUpdateManyDataInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  to: DateTime
+  updatedAt: DateTime
+}
+
+input EventUpdateManyWithoutInstructorsInput {
+  connect: [EventWhereUniqueInput!]
+  create: [EventCreateWithoutInstructorsInput!]
+  delete: [EventWhereUniqueInput!]
+  deleteMany: [EventScalarWhereInput!]
+  disconnect: [EventWhereUniqueInput!]
+  set: [EventWhereUniqueInput!]
+  update: [EventUpdateWithWhereUniqueWithoutInstructorsInput!]
+  updateMany: [EventUpdateManyWithWhereNestedInput!]
+  upsert: [EventUpsertWithWhereUniqueWithoutInstructorsInput!]
+}
+
+input EventUpdateManyWithoutListingInput {
+  connect: [EventWhereUniqueInput!]
+  create: [EventCreateWithoutListingInput!]
+  delete: [EventWhereUniqueInput!]
+  deleteMany: [EventScalarWhereInput!]
+  disconnect: [EventWhereUniqueInput!]
+  set: [EventWhereUniqueInput!]
+  update: [EventUpdateWithWhereUniqueWithoutListingInput!]
+  updateMany: [EventUpdateManyWithWhereNestedInput!]
+  upsert: [EventUpsertWithWhereUniqueWithoutListingInput!]
+}
+
+input EventUpdateManyWithoutProviderInput {
+  connect: [EventWhereUniqueInput!]
+  create: [EventCreateWithoutProviderInput!]
+  delete: [EventWhereUniqueInput!]
+  deleteMany: [EventScalarWhereInput!]
+  disconnect: [EventWhereUniqueInput!]
+  set: [EventWhereUniqueInput!]
+  update: [EventUpdateWithWhereUniqueWithoutProviderInput!]
+  updateMany: [EventUpdateManyWithWhereNestedInput!]
+  upsert: [EventUpsertWithWhereUniqueWithoutProviderInput!]
+}
+
+input EventUpdateManyWithWhereNestedInput {
+  data: EventUpdateManyDataInput!
+  where: EventScalarWhereInput!
+}
+
+input EventUpdateOneWithoutStudentsInput {
+  connect: EventWhereUniqueInput
+  create: EventCreateWithoutStudentsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: EventUpdateWithoutStudentsDataInput
+  upsert: EventUpsertWithoutStudentsInput
+}
+
+input EventUpdateWithoutInstructorsDataInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  listing: ListingUpdateOneRequiredWithoutEventStoreInput
+  provider: ProviderUpdateOneRequiredWithoutEventStoreInput
+  students: StudentUpdateManyWithoutEventInput
+  to: DateTime
+  updatedAt: DateTime
+}
+
+input EventUpdateWithoutListingDataInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  instructors: InstructorUpdateManyWithoutEventStoreInput
+  provider: ProviderUpdateOneRequiredWithoutEventStoreInput
+  students: StudentUpdateManyWithoutEventInput
+  to: DateTime
+  updatedAt: DateTime
+}
+
+input EventUpdateWithoutProviderDataInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  instructors: InstructorUpdateManyWithoutEventStoreInput
+  listing: ListingUpdateOneRequiredWithoutEventStoreInput
+  students: StudentUpdateManyWithoutEventInput
+  to: DateTime
+  updatedAt: DateTime
+}
+
+input EventUpdateWithoutStudentsDataInput {
+  createdAt: DateTime
+  eventState: EventState
+  from: DateTime
+  id: ID
+  instructors: InstructorUpdateManyWithoutEventStoreInput
+  listing: ListingUpdateOneRequiredWithoutEventStoreInput
+  provider: ProviderUpdateOneRequiredWithoutEventStoreInput
+  to: DateTime
+  updatedAt: DateTime
+}
+
+input EventUpdateWithWhereUniqueWithoutInstructorsInput {
+  data: EventUpdateWithoutInstructorsDataInput!
+  where: EventWhereUniqueInput!
+}
+
+input EventUpdateWithWhereUniqueWithoutListingInput {
+  data: EventUpdateWithoutListingDataInput!
+  where: EventWhereUniqueInput!
+}
+
+input EventUpdateWithWhereUniqueWithoutProviderInput {
+  data: EventUpdateWithoutProviderDataInput!
+  where: EventWhereUniqueInput!
+}
+
+input EventUpsertWithoutStudentsInput {
+  create: EventCreateWithoutStudentsInput!
+  update: EventUpdateWithoutStudentsDataInput!
+}
+
+input EventUpsertWithWhereUniqueWithoutInstructorsInput {
+  create: EventCreateWithoutInstructorsInput!
+  update: EventUpdateWithoutInstructorsDataInput!
+  where: EventWhereUniqueInput!
+}
+
+input EventUpsertWithWhereUniqueWithoutListingInput {
+  create: EventCreateWithoutListingInput!
+  update: EventUpdateWithoutListingDataInput!
+  where: EventWhereUniqueInput!
+}
+
+input EventUpsertWithWhereUniqueWithoutProviderInput {
+  create: EventCreateWithoutProviderInput!
+  update: EventUpdateWithoutProviderDataInput!
+  where: EventWhereUniqueInput!
+}
+
+input EventWhereInput {
+  AND: [EventWhereInput!]
+  createdAt: DateTimeFilter
+  eventState: EventState
+  from: NullableDateTimeFilter
+  id: StringFilter
+  instructors: InstructorFilter
+  listing: ListingWhereInput
+  NOT: [EventWhereInput!]
+  OR: [EventWhereInput!]
+  provider: ProviderWhereInput
+  students: StudentFilter
+  to: NullableDateTimeFilter
+  updatedAt: DateTimeFilter
 }
 
 input EventWhereUniqueInput {
@@ -53,9 +313,62 @@ enum Gender {
   MALE
 }
 
+type Instructor {
+  age: Int
+  createdAt: DateTime!
+  eventStore(after: ID, before: ID, first: Int, last: Int, skip: Int): [Event!]!
+  firstName: String!
+  gender: Gender
+  id: ID!
+  lastName: String!
+  listing: Listing
+  provider: Provider
+  updatedAt: DateTime!
+}
+
+input InstructorCreateInput {
+  age: Int
+  createdAt: DateTime
+  email: String
+  eventStore: EventCreateManyWithoutEventStoreInput
+  firstName: String!
+  gender: Gender
+  id: ID
+  lastName: String!
+  listing: ListingCreateOneWithoutListingInput
+  provider: ProviderCreateOneWithoutProviderInput
+  updatedAt: DateTime
+}
+
 input InstructorCreateManyWithoutInstructorsInput {
   connect: [InstructorWhereUniqueInput!]
   create: [InstructorCreateWithoutProviderInput!]
+}
+
+input InstructorCreateWithoutEventStoreInput {
+  age: Int
+  createdAt: DateTime
+  email: String
+  firstName: String!
+  gender: Gender
+  id: ID
+  lastName: String!
+  listing: ListingCreateOneWithoutListingInput
+  provider: ProviderCreateOneWithoutProviderInput
+  updatedAt: DateTime
+}
+
+input InstructorCreateWithoutListingInput {
+  age: Int
+  createdAt: DateTime
+  email: String
+  eventStore: EventCreateManyWithoutEventStoreInput
+  firstName: String!
+  gender: Gender
+  id: ID
+  lastName: String!
+  provider: ProviderCreateOneWithoutProviderInput
+  updatedAt: DateTime
 }
 
 input InstructorCreateWithoutProviderInput {
@@ -69,6 +382,168 @@ input InstructorCreateWithoutProviderInput {
   lastName: String!
   listing: ListingCreateOneWithoutListingInput
   updatedAt: DateTime
+}
+
+input InstructorFilter {
+  every: InstructorWhereInput
+  none: InstructorWhereInput
+  some: InstructorWhereInput
+}
+
+input InstructorScalarWhereInput {
+  age: NullableIntFilter
+  AND: [InstructorScalarWhereInput!]
+  createdAt: DateTimeFilter
+  email: NullableStringFilter
+  eventStore: EventFilter
+  firstName: StringFilter
+  gender: Gender
+  id: StringFilter
+  lastName: StringFilter
+  NOT: [InstructorScalarWhereInput!]
+  OR: [InstructorScalarWhereInput!]
+  updatedAt: DateTimeFilter
+}
+
+input InstructorUpdateManyDataInput {
+  age: Int
+  createdAt: DateTime
+  email: String
+  firstName: String
+  gender: Gender
+  id: ID
+  lastName: String
+  updatedAt: DateTime
+}
+
+input InstructorUpdateManyWithoutEventStoreInput {
+  connect: [InstructorWhereUniqueInput!]
+  create: [InstructorCreateWithoutEventStoreInput!]
+  delete: [InstructorWhereUniqueInput!]
+  deleteMany: [InstructorScalarWhereInput!]
+  disconnect: [InstructorWhereUniqueInput!]
+  set: [InstructorWhereUniqueInput!]
+  update: [InstructorUpdateWithWhereUniqueWithoutEventStoreInput!]
+  updateMany: [InstructorUpdateManyWithWhereNestedInput!]
+  upsert: [InstructorUpsertWithWhereUniqueWithoutEventStoreInput!]
+}
+
+input InstructorUpdateManyWithoutListingInput {
+  connect: [InstructorWhereUniqueInput!]
+  create: [InstructorCreateWithoutListingInput!]
+  delete: [InstructorWhereUniqueInput!]
+  deleteMany: [InstructorScalarWhereInput!]
+  disconnect: [InstructorWhereUniqueInput!]
+  set: [InstructorWhereUniqueInput!]
+  update: [InstructorUpdateWithWhereUniqueWithoutListingInput!]
+  updateMany: [InstructorUpdateManyWithWhereNestedInput!]
+  upsert: [InstructorUpsertWithWhereUniqueWithoutListingInput!]
+}
+
+input InstructorUpdateManyWithoutProviderInput {
+  connect: [InstructorWhereUniqueInput!]
+  create: [InstructorCreateWithoutProviderInput!]
+  delete: [InstructorWhereUniqueInput!]
+  deleteMany: [InstructorScalarWhereInput!]
+  disconnect: [InstructorWhereUniqueInput!]
+  set: [InstructorWhereUniqueInput!]
+  update: [InstructorUpdateWithWhereUniqueWithoutProviderInput!]
+  updateMany: [InstructorUpdateManyWithWhereNestedInput!]
+  upsert: [InstructorUpsertWithWhereUniqueWithoutProviderInput!]
+}
+
+input InstructorUpdateManyWithWhereNestedInput {
+  data: InstructorUpdateManyDataInput!
+  where: InstructorScalarWhereInput!
+}
+
+input InstructorUpdateWithoutEventStoreDataInput {
+  age: Int
+  createdAt: DateTime
+  email: String
+  firstName: String
+  gender: Gender
+  id: ID
+  lastName: String
+  listing: ListingUpdateOneWithoutInstructorsInput
+  provider: ProviderUpdateOneWithoutInstructorsInput
+  updatedAt: DateTime
+}
+
+input InstructorUpdateWithoutListingDataInput {
+  age: Int
+  createdAt: DateTime
+  email: String
+  eventStore: EventUpdateManyWithoutInstructorsInput
+  firstName: String
+  gender: Gender
+  id: ID
+  lastName: String
+  provider: ProviderUpdateOneWithoutInstructorsInput
+  updatedAt: DateTime
+}
+
+input InstructorUpdateWithoutProviderDataInput {
+  age: Int
+  createdAt: DateTime
+  email: String
+  eventStore: EventUpdateManyWithoutInstructorsInput
+  firstName: String
+  gender: Gender
+  id: ID
+  lastName: String
+  listing: ListingUpdateOneWithoutInstructorsInput
+  updatedAt: DateTime
+}
+
+input InstructorUpdateWithWhereUniqueWithoutEventStoreInput {
+  data: InstructorUpdateWithoutEventStoreDataInput!
+  where: InstructorWhereUniqueInput!
+}
+
+input InstructorUpdateWithWhereUniqueWithoutListingInput {
+  data: InstructorUpdateWithoutListingDataInput!
+  where: InstructorWhereUniqueInput!
+}
+
+input InstructorUpdateWithWhereUniqueWithoutProviderInput {
+  data: InstructorUpdateWithoutProviderDataInput!
+  where: InstructorWhereUniqueInput!
+}
+
+input InstructorUpsertWithWhereUniqueWithoutEventStoreInput {
+  create: InstructorCreateWithoutEventStoreInput!
+  update: InstructorUpdateWithoutEventStoreDataInput!
+  where: InstructorWhereUniqueInput!
+}
+
+input InstructorUpsertWithWhereUniqueWithoutListingInput {
+  create: InstructorCreateWithoutListingInput!
+  update: InstructorUpdateWithoutListingDataInput!
+  where: InstructorWhereUniqueInput!
+}
+
+input InstructorUpsertWithWhereUniqueWithoutProviderInput {
+  create: InstructorCreateWithoutProviderInput!
+  update: InstructorUpdateWithoutProviderDataInput!
+  where: InstructorWhereUniqueInput!
+}
+
+input InstructorWhereInput {
+  age: NullableIntFilter
+  AND: [InstructorWhereInput!]
+  createdAt: DateTimeFilter
+  email: NullableStringFilter
+  eventStore: EventFilter
+  firstName: StringFilter
+  gender: Gender
+  id: StringFilter
+  lastName: StringFilter
+  listing: ListingWhereInput
+  NOT: [InstructorWhereInput!]
+  OR: [InstructorWhereInput!]
+  provider: ProviderWhereInput
+  updatedAt: DateTimeFilter
 }
 
 input InstructorWhereUniqueInput {
@@ -105,6 +580,16 @@ input ListingCreateWithoutEventStoreInput {
   updatedAt: DateTime
 }
 
+input ListingCreateWithoutInstructorsInput {
+  content: String
+  createdAt: DateTime
+  EventStore: EventCreateManyWithoutEventStoreInput
+  id: ID
+  owner: ProviderCreateOneWithoutOwnerInput!
+  title: String!
+  updatedAt: DateTime
+}
+
 input ListingCreateWithoutOwnerInput {
   content: String
   createdAt: DateTime
@@ -115,16 +600,191 @@ input ListingCreateWithoutOwnerInput {
   updatedAt: DateTime
 }
 
+input ListingFilter {
+  every: ListingWhereInput
+  none: ListingWhereInput
+  some: ListingWhereInput
+}
+
+input ListingScalarWhereInput {
+  AND: [ListingScalarWhereInput!]
+  content: NullableStringFilter
+  createdAt: DateTimeFilter
+  EventStore: EventFilter
+  id: StringFilter
+  instructors: InstructorFilter
+  NOT: [ListingScalarWhereInput!]
+  OR: [ListingScalarWhereInput!]
+  title: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input ListingUpdateManyDataInput {
+  content: String
+  createdAt: DateTime
+  id: ID
+  title: String
+  updatedAt: DateTime
+}
+
+input ListingUpdateManyWithoutOwnerInput {
+  connect: [ListingWhereUniqueInput!]
+  create: [ListingCreateWithoutOwnerInput!]
+  delete: [ListingWhereUniqueInput!]
+  deleteMany: [ListingScalarWhereInput!]
+  disconnect: [ListingWhereUniqueInput!]
+  set: [ListingWhereUniqueInput!]
+  update: [ListingUpdateWithWhereUniqueWithoutOwnerInput!]
+  updateMany: [ListingUpdateManyWithWhereNestedInput!]
+  upsert: [ListingUpsertWithWhereUniqueWithoutOwnerInput!]
+}
+
+input ListingUpdateManyWithWhereNestedInput {
+  data: ListingUpdateManyDataInput!
+  where: ListingScalarWhereInput!
+}
+
+input ListingUpdateOneRequiredWithoutEventStoreInput {
+  connect: ListingWhereUniqueInput
+  create: ListingCreateWithoutEventStoreInput
+  update: ListingUpdateWithoutEventStoreDataInput
+  upsert: ListingUpsertWithoutEventStoreInput
+}
+
+input ListingUpdateOneWithoutInstructorsInput {
+  connect: ListingWhereUniqueInput
+  create: ListingCreateWithoutInstructorsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: ListingUpdateWithoutInstructorsDataInput
+  upsert: ListingUpsertWithoutInstructorsInput
+}
+
+input ListingUpdateWithoutEventStoreDataInput {
+  content: String
+  createdAt: DateTime
+  id: ID
+  instructors: InstructorUpdateManyWithoutListingInput
+  owner: ProviderUpdateOneRequiredWithoutListingsInput
+  title: String
+  updatedAt: DateTime
+}
+
+input ListingUpdateWithoutInstructorsDataInput {
+  content: String
+  createdAt: DateTime
+  EventStore: EventUpdateManyWithoutListingInput
+  id: ID
+  owner: ProviderUpdateOneRequiredWithoutListingsInput
+  title: String
+  updatedAt: DateTime
+}
+
+input ListingUpdateWithoutOwnerDataInput {
+  content: String
+  createdAt: DateTime
+  EventStore: EventUpdateManyWithoutListingInput
+  id: ID
+  instructors: InstructorUpdateManyWithoutListingInput
+  title: String
+  updatedAt: DateTime
+}
+
+input ListingUpdateWithWhereUniqueWithoutOwnerInput {
+  data: ListingUpdateWithoutOwnerDataInput!
+  where: ListingWhereUniqueInput!
+}
+
+input ListingUpsertWithoutEventStoreInput {
+  create: ListingCreateWithoutEventStoreInput!
+  update: ListingUpdateWithoutEventStoreDataInput!
+}
+
+input ListingUpsertWithoutInstructorsInput {
+  create: ListingCreateWithoutInstructorsInput!
+  update: ListingUpdateWithoutInstructorsDataInput!
+}
+
+input ListingUpsertWithWhereUniqueWithoutOwnerInput {
+  create: ListingCreateWithoutOwnerInput!
+  update: ListingUpdateWithoutOwnerDataInput!
+  where: ListingWhereUniqueInput!
+}
+
+input ListingWhereInput {
+  AND: [ListingWhereInput!]
+  content: NullableStringFilter
+  createdAt: DateTimeFilter
+  EventStore: EventFilter
+  id: StringFilter
+  instructors: InstructorFilter
+  NOT: [ListingWhereInput!]
+  OR: [ListingWhereInput!]
+  owner: ProviderWhereInput
+  title: StringFilter
+  updatedAt: DateTimeFilter
+}
+
 input ListingWhereUniqueInput {
   id: ID
 }
 
 type Mutation {
   createDraft(authorEmail: String, content: String, title: String!): Post!
+  createEvent(data: EventCreateInput!): Event!
+  createInstructor(data: InstructorCreateInput!): Instructor!
   createListing(ownerEmail: String!, title: String!): Listing!
+  createStudent(age: Int, firstName: String!, gender: String, lastName: String!, userEmail: String!): Student!
+  deleteEvent(where: EventWhereUniqueInput!): Event
+  deleteInstructor(where: InstructorWhereUniqueInput!): Instructor
+  linkInstructorToListing(instructorId: ID, listingId: ID!): Listing!
   publish(id: ID): Post
+  removeStudent(id: ID!): Student!
   signupProvider(data: ProviderCreateInput!): Provider!
   signupUser(data: UserCreateInput!): User!
+  toggleEventStateToActive(id: ID!): Event!
+  toggleEventStateToFufilled(id: ID!): Event!
+  toggleEventStateToInactive(id: ID!): Event!
+  unlinkInstructorFromListing(instructorId: ID, listingId: ID!): Listing!
+  updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
+  updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+}
+
+input NullableDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTime
+  notIn: [DateTime!]
+}
+
+input NullableIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
+}
+
+input NullableStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 type Post {
@@ -149,6 +809,83 @@ input PostCreateWithoutAuthorInput {
   published: Boolean
   title: String!
   updatedAt: DateTime
+}
+
+input PostFilter {
+  every: PostWhereInput
+  none: PostWhereInput
+  some: PostWhereInput
+}
+
+input PostScalarWhereInput {
+  AND: [PostScalarWhereInput!]
+  content: NullableStringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [PostScalarWhereInput!]
+  OR: [PostScalarWhereInput!]
+  published: BooleanFilter
+  title: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input PostUpdateManyDataInput {
+  content: String
+  createdAt: DateTime
+  id: ID
+  published: Boolean
+  title: String
+  updatedAt: DateTime
+}
+
+input PostUpdateManyWithoutAuthorInput {
+  connect: [PostWhereUniqueInput!]
+  create: [PostCreateWithoutAuthorInput!]
+  delete: [PostWhereUniqueInput!]
+  deleteMany: [PostScalarWhereInput!]
+  disconnect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [PostUpdateManyWithWhereNestedInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input PostUpdateManyWithWhereNestedInput {
+  data: PostUpdateManyDataInput!
+  where: PostScalarWhereInput!
+}
+
+input PostUpdateWithoutAuthorDataInput {
+  content: String
+  createdAt: DateTime
+  id: ID
+  published: Boolean
+  title: String
+  updatedAt: DateTime
+}
+
+input PostUpdateWithWhereUniqueWithoutAuthorInput {
+  data: PostUpdateWithoutAuthorDataInput!
+  where: PostWhereUniqueInput!
+}
+
+input PostUpsertWithWhereUniqueWithoutAuthorInput {
+  create: PostCreateWithoutAuthorInput!
+  update: PostUpdateWithoutAuthorDataInput!
+  where: PostWhereUniqueInput!
+}
+
+input PostWhereInput {
+  AND: [PostWhereInput!]
+  author: UserWhereInput
+  content: NullableStringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [PostWhereInput!]
+  OR: [PostWhereInput!]
+  published: BooleanFilter
+  title: StringFilter
+  updatedAt: DateTimeFilter
 }
 
 input PostWhereUniqueInput {
@@ -189,6 +926,14 @@ input ProviderCreateWithoutEventStoreInput {
   name: String
 }
 
+input ProviderCreateWithoutInstructorsInput {
+  email: String!
+  eventStore: EventCreateManyWithoutEventStoreInput
+  id: ID
+  listings: ListingCreateManyWithoutListingsInput
+  name: String
+}
+
 input ProviderCreateWithoutListingsInput {
   email: String!
   eventStore: EventCreateManyWithoutEventStoreInput
@@ -197,18 +942,129 @@ input ProviderCreateWithoutListingsInput {
   name: String
 }
 
+input ProviderUpdateOneRequiredWithoutEventStoreInput {
+  connect: ProviderWhereUniqueInput
+  create: ProviderCreateWithoutEventStoreInput
+  update: ProviderUpdateWithoutEventStoreDataInput
+  upsert: ProviderUpsertWithoutEventStoreInput
+}
+
+input ProviderUpdateOneRequiredWithoutListingsInput {
+  connect: ProviderWhereUniqueInput
+  create: ProviderCreateWithoutListingsInput
+  update: ProviderUpdateWithoutListingsDataInput
+  upsert: ProviderUpsertWithoutListingsInput
+}
+
+input ProviderUpdateOneWithoutInstructorsInput {
+  connect: ProviderWhereUniqueInput
+  create: ProviderCreateWithoutInstructorsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: ProviderUpdateWithoutInstructorsDataInput
+  upsert: ProviderUpsertWithoutInstructorsInput
+}
+
+input ProviderUpdateWithoutEventStoreDataInput {
+  email: String
+  id: ID
+  instructors: InstructorUpdateManyWithoutProviderInput
+  listings: ListingUpdateManyWithoutOwnerInput
+  name: String
+}
+
+input ProviderUpdateWithoutInstructorsDataInput {
+  email: String
+  eventStore: EventUpdateManyWithoutProviderInput
+  id: ID
+  listings: ListingUpdateManyWithoutOwnerInput
+  name: String
+}
+
+input ProviderUpdateWithoutListingsDataInput {
+  email: String
+  eventStore: EventUpdateManyWithoutProviderInput
+  id: ID
+  instructors: InstructorUpdateManyWithoutProviderInput
+  name: String
+}
+
+input ProviderUpsertWithoutEventStoreInput {
+  create: ProviderCreateWithoutEventStoreInput!
+  update: ProviderUpdateWithoutEventStoreDataInput!
+}
+
+input ProviderUpsertWithoutInstructorsInput {
+  create: ProviderCreateWithoutInstructorsInput!
+  update: ProviderUpdateWithoutInstructorsDataInput!
+}
+
+input ProviderUpsertWithoutListingsInput {
+  create: ProviderCreateWithoutListingsInput!
+  update: ProviderUpdateWithoutListingsDataInput!
+}
+
+input ProviderWhereInput {
+  AND: [ProviderWhereInput!]
+  email: StringFilter
+  eventStore: EventFilter
+  id: StringFilter
+  instructors: InstructorFilter
+  listings: ListingFilter
+  name: NullableStringFilter
+  NOT: [ProviderWhereInput!]
+  OR: [ProviderWhereInput!]
+}
+
 input ProviderWhereUniqueInput {
   email: String
   id: ID
 }
 
 type Query {
-  browse: [Listing!]!
+  allStudents: [Student!]!
+  browseListings: [Listing!]!
+  event(where: EventWhereUniqueInput!): Event
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!
+  findEventById(searchString: String): [Event!]!
+  findInstructorById(searchString: String): [Instructor!]!
+  findListingById(searchString: String): [Listing!]!
+  findProviderById(searchString: String): [Provider!]!
+  findStudentById(searchString: String): [Student!]!
+  findUser(email: String, id: ID, name: String): [User!]!
+  instructor(where: InstructorWhereUniqueInput!): Instructor
   listing(where: ListingWhereUniqueInput!): Listing
   post(where: PostWhereUniqueInput!): Post
-  search(searchString: String): [Listing!]!
+  provider(where: ProviderWhereUniqueInput!): Provider
+  searchEventsByProvider(searchString: String): [Event!]!
+  searchInstructor(searchString: String): [Instructor!]!
+  searchListing(searchString: String): [Listing!]!
+  searchProvider(searchString: String): [Provider!]!
+  student(where: StudentWhereUniqueInput!): Student
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
+}
+
+type Student {
+  age: Int
+  firstName: String
+  gender: Gender!
+  id: ID!
+  lastName: String
+  user: User!
 }
 
 input StudentCreateManyWithoutStudentInput {
@@ -237,6 +1093,123 @@ input StudentCreateWithoutUserInput {
   gender: Gender
   id: ID
   lastName: String
+}
+
+input StudentFilter {
+  every: StudentWhereInput
+  none: StudentWhereInput
+  some: StudentWhereInput
+}
+
+input StudentScalarWhereInput {
+  age: NullableIntFilter
+  AND: [StudentScalarWhereInput!]
+  firstName: NullableStringFilter
+  gender: Gender
+  id: StringFilter
+  lastName: NullableStringFilter
+  NOT: [StudentScalarWhereInput!]
+  OR: [StudentScalarWhereInput!]
+}
+
+input StudentUpdateInput {
+  age: Int
+  event: EventUpdateOneWithoutStudentsInput
+  firstName: String
+  gender: Gender
+  id: ID
+  lastName: String
+  user: UserUpdateOneRequiredWithoutStudentInput
+}
+
+input StudentUpdateManyDataInput {
+  age: Int
+  firstName: String
+  gender: Gender
+  id: ID
+  lastName: String
+}
+
+input StudentUpdateManyWithoutEventInput {
+  connect: [StudentWhereUniqueInput!]
+  create: [StudentCreateWithoutEventInput!]
+  delete: [StudentWhereUniqueInput!]
+  deleteMany: [StudentScalarWhereInput!]
+  disconnect: [StudentWhereUniqueInput!]
+  set: [StudentWhereUniqueInput!]
+  update: [StudentUpdateWithWhereUniqueWithoutEventInput!]
+  updateMany: [StudentUpdateManyWithWhereNestedInput!]
+  upsert: [StudentUpsertWithWhereUniqueWithoutEventInput!]
+}
+
+input StudentUpdateManyWithoutUserInput {
+  connect: [StudentWhereUniqueInput!]
+  create: [StudentCreateWithoutUserInput!]
+  delete: [StudentWhereUniqueInput!]
+  deleteMany: [StudentScalarWhereInput!]
+  disconnect: [StudentWhereUniqueInput!]
+  set: [StudentWhereUniqueInput!]
+  update: [StudentUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [StudentUpdateManyWithWhereNestedInput!]
+  upsert: [StudentUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StudentUpdateManyWithWhereNestedInput {
+  data: StudentUpdateManyDataInput!
+  where: StudentScalarWhereInput!
+}
+
+input StudentUpdateWithoutEventDataInput {
+  age: Int
+  firstName: String
+  gender: Gender
+  id: ID
+  lastName: String
+  user: UserUpdateOneRequiredWithoutStudentInput
+}
+
+input StudentUpdateWithoutUserDataInput {
+  age: Int
+  event: EventUpdateOneWithoutStudentsInput
+  firstName: String
+  gender: Gender
+  id: ID
+  lastName: String
+}
+
+input StudentUpdateWithWhereUniqueWithoutEventInput {
+  data: StudentUpdateWithoutEventDataInput!
+  where: StudentWhereUniqueInput!
+}
+
+input StudentUpdateWithWhereUniqueWithoutUserInput {
+  data: StudentUpdateWithoutUserDataInput!
+  where: StudentWhereUniqueInput!
+}
+
+input StudentUpsertWithWhereUniqueWithoutEventInput {
+  create: StudentCreateWithoutEventInput!
+  update: StudentUpdateWithoutEventDataInput!
+  where: StudentWhereUniqueInput!
+}
+
+input StudentUpsertWithWhereUniqueWithoutUserInput {
+  create: StudentCreateWithoutUserInput!
+  update: StudentUpdateWithoutUserDataInput!
+  where: StudentWhereUniqueInput!
+}
+
+input StudentWhereInput {
+  age: NullableIntFilter
+  AND: [StudentWhereInput!]
+  event: EventWhereInput
+  firstName: NullableStringFilter
+  gender: Gender
+  id: StringFilter
+  lastName: NullableStringFilter
+  NOT: [StudentWhereInput!]
+  OR: [StudentWhereInput!]
+  user: UserWhereInput
 }
 
 input StudentWhereUniqueInput {
@@ -268,6 +1241,44 @@ input UserCreateWithoutStudentInput {
   id: ID
   name: String
   posts: PostCreateManyWithoutPostsInput
+}
+
+input UserUpdateInput {
+  email: String
+  id: ID
+  name: String
+  posts: PostUpdateManyWithoutAuthorInput
+  student: StudentUpdateManyWithoutUserInput
+}
+
+input UserUpdateOneRequiredWithoutStudentInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutStudentInput
+  update: UserUpdateWithoutStudentDataInput
+  upsert: UserUpsertWithoutStudentInput
+}
+
+input UserUpdateWithoutStudentDataInput {
+  email: String
+  id: ID
+  name: String
+  posts: PostUpdateManyWithoutAuthorInput
+}
+
+input UserUpsertWithoutStudentInput {
+  create: UserCreateWithoutStudentInput!
+  update: UserUpdateWithoutStudentDataInput!
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  email: StringFilter
+  id: StringFilter
+  name: NullableStringFilter
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  posts: PostFilter
+  student: StudentFilter
 }
 
 input UserWhereUniqueInput {
